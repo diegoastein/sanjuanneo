@@ -384,6 +384,14 @@
                             </label>
                         </div>
                     </div>
+                    
+                    <!-- Fila 4: Botón de Búsqueda -->
+                    <div class="flex justify-end pt-2 border-t border-blue-200">
+                        <button id="btn-search-manual" class="btn-primary flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            Buscar
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -393,7 +401,7 @@
                     Cargando...
                 </div>
                 <div class="flex gap-2">
-                    <button id="btn-export-filtered" class="btn-secondary py-2 px-3 text-sm">Exp. Vista</button>
+                    <button id="btn-export-filtered" class="btn-secondary py-2 px-3 text-sm">Exportar Búsqueda</button>
                     <button id="btn-export-all" class="btn-secondary py-2 px-3 text-sm">Exp. Todo</button>
                     <button id="btn-nuevo-paciente" class="btn-primary py-2 px-3 text-sm flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -760,6 +768,8 @@
             addListenerSafe('search-eg-end', 'input', processLocalFilters);
             // Checkbox
             addListenerSafe('search-only-interned', 'change', processLocalFilters);
+            // Botón de Búsqueda Manual
+            addListenerSafe('btn-search-manual', 'click', processLocalFilters);
 
             addListenerSafe('btn-export-filtered', 'click', () => exportToCsv(filteredPacientes, 'Neo_SJD_Vista'));
             addListenerSafe('btn-export-all', 'click', handleExportAll); 
