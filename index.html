@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-<link rel="shortcut icon" href="favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-<link rel="manifest" href="site.webmanifest" />
+    <!-- 
+      NOTA PARA EL DESARROLLADOR:
+      Recuerda actualizar los archivos de imagen (favicon, apple-touch-icon) 
+      en la carpeta del proyecto para que coincidan con el logo de la nueva institución.
+    -->
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neonatología - Hospital Carrillo</title>
+    <meta name="description" content="Sistema de gestión de pacientes de Neonatología - Casa Hospital San Juan de Dios">
+    <meta name="theme-color" content="#2563eb">
+    
+    <title>Neonatología - Casa Hospital San Juan de Dios</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -26,7 +34,7 @@
 
         /* Títulos */
         .title-text {
-            color: #2563eb; 
+            color: #1e40af; /* Un azul un poco más oscuro para mayor seriedad institucional */
         }
 
         /* Botones Generales */
@@ -155,19 +163,26 @@
 </head>
 <body class="bg-sky-50 text-gray-900 min-h-screen flex flex-col">
 
-    <header class="bg-blue-600 text-white shadow-lg p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <h1 class="text-2xl font-bold tracking-tight">Neo Carrillo</h1>
+    <!-- Header Optimizado para nombres largos -->
+    <header class="bg-blue-800 text-white shadow-lg p-4">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2 text-center sm:text-left">
+                <!-- Icono de hospital genérico (SVG inline) para decorar -->
+                <svg class="w-8 h-8 text-blue-200 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight leading-tight">Neo San Juan de Dios</h1>
+                    <p class="text-xs text-blue-200 font-light hidden sm:block">Casa Hospital San Juan de Dios</p>
+                </div>
             </div>
             <div class="flex items-center gap-4">
-                <span id="user-id-display" class="text-sm font-medium bg-blue-700 px-3 py-1 rounded-full opacity-90">Conectando...</span>
+                <span id="user-id-display" class="text-xs sm:text-sm font-medium bg-blue-900 px-3 py-1 rounded-full opacity-90 border border-blue-700">Conectando...</span>
             </div>
         </div>
     </header>
 
-    <nav class="container mx-auto px-4 sm:px-8 mt-8">
-        <div class="flex flex-wrap gap-x-2 border-b border-gray-200 bg-gray-100 rounded-t-lg p-2">
+    <nav class="container mx-auto px-4 sm:px-8 mt-6">
+        <div class="flex flex-wrap gap-x-2 border-b border-gray-200 bg-white/50 rounded-t-lg p-2 backdrop-blur-sm">
             <button id="tab-ingreso" class="tab-btn active w-full sm:w-auto text-center flex-1 sm:flex-none">
                 Ingreso / Edición
             </button>
@@ -182,7 +197,7 @@
 
     <main class="container mx-auto px-4 sm:px-8 mb-12 flex-grow">
 
-        <div id="ingreso-view" class="p-8 bg-white shadow-lg rounded-b-lg">
+        <div id="ingreso-view" class="p-8 bg-white shadow-lg rounded-b-lg animate-fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h2 id="form-title" class="text-2xl font-semibold title-text">Nuevo Ingreso</h2>
                 <button type="button" id="btn-cancelar-edicion" class="hidden btn-secondary text-sm py-2">Cancelar Edición</button>
@@ -272,22 +287,21 @@
                 <h2 class="text-xl font-semibold title-text mb-4">Filtros de Búsqueda</h2>
                 
                 <div class="flex flex-col gap-4">
-                    <!-- Fila 1: Texto, Patología, Procedencia -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
+                    <!-- Fila 1: Datos Clínicos -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="md:col-span-1">
                             <label class="block text-xs font-bold text-blue-600 uppercase mb-1">Nombre / Apellido</label>
-                            <input type="text" id="search-general" placeholder="Buscar... (ej: Juan, Perez, Juan Pe...)" class="form-input">
-                            <p class="text-xs text-blue-400 mt-1 ml-1">* Búsqueda instantánea en cualquier orden</p>
+                            <input type="text" id="search-general" placeholder="Buscar..." class="form-input text-sm">
                         </div>
-                        <div>
+                        <div class="md:col-span-1">
                             <label class="block text-xs font-bold text-blue-600 uppercase mb-1">Patología</label>
-                            <select id="search-patologia" class="form-input">
+                            <select id="search-patologia" class="form-input text-sm">
                                 <option value="">-- Todas --</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="md:col-span-1">
                             <label class="block text-xs font-bold text-blue-600 uppercase mb-1">Procedencia</label>
-                            <select id="search-procedencia" class="form-input">
+                            <select id="search-procedencia" class="form-input text-sm">
                                 <option value="">-- Todas --</option>
                                 <option value="Sala de partos">Sala de partos</option>
                                 <option value="Quirófano">Quirófano</option>
@@ -297,36 +311,80 @@
                                 <option value="Guardia">Guardia</option>
                             </select>
                         </div>
+                        <!-- NUEVO: PESO MENOR QUE -->
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-bold text-red-600 uppercase mb-1">Peso Menor A (g)</label>
+                            <input type="number" id="search-weight-max" placeholder="Ej: 1500" class="form-input text-sm border-red-200 focus:border-red-500 focus:ring-red-200">
+                        </div>
                     </div>
 
-                    <!-- Fila 2: Fechas y Edad Gestacional -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Fila 2: Rangos de Fechas -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-blue-100/50 p-3 rounded-lg border border-blue-100">
+                        <!-- Fecha Nacimiento -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nac. Desde</label>
-                            <input type="date" id="search-date-start" class="form-input text-sm">
+                            <span class="block text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">Fecha Nacimiento</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] text-gray-400 uppercase">Desde</label>
+                                    <input type="date" id="search-date-start" class="form-input text-xs p-1">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-gray-400 uppercase">Hasta</label>
+                                    <input type="date" id="search-date-end" class="form-input text-xs p-1">
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Fecha Internación -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nac. Hasta</label>
-                            <input type="date" id="search-date-end" class="form-input text-sm">
+                            <span class="block text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">Fecha Internación</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] text-gray-400 uppercase">Desde</label>
+                                    <input type="date" id="search-date-int-start" class="form-input text-xs p-1">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-gray-400 uppercase">Hasta</label>
+                                    <input type="date" id="search-date-int-end" class="form-input text-xs p-1">
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Fecha Alta -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">EG Min</label>
+                            <span class="block text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">Fecha Alta / Egreso</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] text-gray-400 uppercase">Desde</label>
+                                    <input type="date" id="search-date-egr-start" class="form-input text-xs p-1">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-gray-400 uppercase">Hasta</label>
+                                    <input type="date" id="search-date-egr-end" class="form-input text-xs p-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Edad Gestacional y Checkbox -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">EG Min (sem)</label>
                             <input type="number" step="0.1" id="search-eg-start" placeholder="Sem" class="form-input text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">EG Max</label>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">EG Max (sem)</label>
                             <input type="number" step="0.1" id="search-eg-end" placeholder="Sem" class="form-input text-sm">
+                        </div>
+                        <div class="md:col-span-2 flex items-center pb-2">
+                            <input id="search-only-interned" type="checkbox" class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer">
+                            <label for="search-only-interned" class="ml-2 text-sm font-bold text-blue-800 cursor-pointer select-none flex items-center">
+                                <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                Mostrar solo Pacientes Internados (Activos)
+                            </label>
                         </div>
                     </div>
 
-                    <!-- Fila 3: Filtro Específico Internados -->
-                    <div class="mt-2 border-t border-blue-200 pt-3 flex items-center">
-                        <input id="search-only-interned" type="checkbox" class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer">
-                        <label for="search-only-interned" class="ml-2 text-sm font-bold text-blue-800 cursor-pointer select-none flex items-center">
-                            <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                            Mostrar solo Pacientes Internados (Activos)
-                        </label>
-                    </div>
                 </div>
             </div>
 
@@ -427,10 +485,11 @@
 
     <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
         <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
-            &copy; 2025 Neonatología Hospital Carrillo - Sistema NeoManager
+            &copy; 2025 Neonatología - Casa Hospital San Juan de Dios - Dr. Diego Steinberg
         </div>
     </footer>
 
+    <!-- MODAL DIAGNOSTICO -->
     <div id="diagnostico-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg shadow-2xl max-w-2xl w-full h-[80vh] flex flex-col transform transition-all">
             <div class="flex justify-between items-center p-5 border-b border-gray-100">
@@ -449,7 +508,8 @@
                 
                 <div class="flex-grow overflow-y-auto pr-2">
                     <ul id="diag-modal-list" class="space-y-1">
-                        </ul>
+                        <!-- Lista JS -->
+                    </ul>
                 </div>
             </div>
             
@@ -459,6 +519,7 @@
         </div>
     </div>
 
+    <!-- MODAL BORRAR -->
     <div id="delete-modal" class="hidden fixed inset-0 bg-red-900 bg-opacity-20 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
         <div class="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 text-center">
             <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
@@ -473,6 +534,7 @@
         </div>
     </div>
 
+    <!-- LOADING OVERLAY -->
     <div id="loading-overlay" class="hidden fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50 backdrop-blur-[2px]">
         <div class="flex flex-col items-center">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -480,6 +542,7 @@
         </div>
     </div>
 
+    <!-- TOAST NOTIFICATION -->
     <div id="toast-notification" class="hidden fixed bottom-5 right-5 max-w-sm w-full bg-white border-l-4 p-4 rounded shadow-lg flex items-center transition-all duration-500 z-50 transform translate-y-10 opacity-0">
         <div class="flex-grow">
             <p id="toast-message" class="text-sm font-medium text-gray-800"></p>
@@ -487,7 +550,6 @@
     </div>
 
     <script type="module">
-        // Importar las funciones necesarias de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { 
             getAuth, 
@@ -517,79 +579,75 @@
         let app, auth, db, userId, appId;
         let pacientesCollectionRef, customDiagnosticosCollectionRef;
 
-        // NUEVO: Cache local para búsqueda instantánea
         let allPatientsList = []; 
         let isPatientsLoaded = false;
-
         let filteredPacientes = []; 
         let totalPatientCount = 0; 
         let baseDiagnosticos = []; 
         let customDiagnosticos = []; 
         let allDiagnosticos = []; 
-
         let selectedDiagnosticos = []; 
         let editingPatientId = null; 
         let patientToDeleteId = null; 
 
-        // Variable para la suscripción del Dashboard
         let unsubscribeDashboard = null;
-        // Variable para la suscripción principal de datos
         let unsubscribePatients = null;
 
-        // --- CONFIGURACIÓN DE FIREBASE ---
+        /* ==============================================================
+           CONFIGURACIÓN DE FIREBASE 
+           ============================================================== */
         let firebaseConfig;
         
-        // Priorizar la configuración inyectada por el entorno si existe
+        // Cuando cambies el proyecto, actualiza estos valores si no usas 
+        // el entorno de inyección automática.
         if (typeof __firebase_config !== 'undefined') {
             firebaseConfig = JSON.parse(__firebase_config);
         } else {
-            // Configuración manual (fallback)
+            // ---> PEGAR AQUÍ TU NUEVA CONFIGURACIÓN DE FIREBASE <---
             firebaseConfig = {
-                apiKey: "AIzaSyApnwRZQklxTBLhwBBIoyAcCiBAgzyhtvE",
-                authDomain: "neomanager-a4482.firebaseapp.com",
-                projectId: "neomanager-a4482",
-                storageBucket: "neomanager-a4482.firebasestorage.app",
-                messagingSenderId: "574188152831",
-                appId: "1:574188152831:web:34ab797c5b709e7e3429ca"
+                apiKey: "AIzaSyApnwRZQklxTBLhwBBIoyAcCiBAgzyhtvE", // Reemplazar
+                authDomain: "neomanager-a4482.firebaseapp.com",     // Reemplazar
+                projectId: "neomanager-a4482",                      // Reemplazar
+                storageBucket: "neomanager-a4482.firebasestorage.app", // Reemplazar
+                messagingSenderId: "574188152831",                  // Reemplazar
+                appId: "1:574188152831:web:34ab797c5b709e7e3429ca"  // Reemplazar
             };
         }
         
-        appId = typeof __app_id !== 'undefined' ? __app_id : 'neo-manager-default';
+        // Identificador de App (usar nombre único para la nueva institución)
+        appId = typeof __app_id !== 'undefined' ? __app_id : 'neo-san-juan-de-dios';
 
-        // --- INICIALIZACIÓN DE LA APP ---
-
+        // --- INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
-            setLogLevel('Debug'); 
+            // setLogLevel('Debug'); // Descomentar para debug
 
             populateBaseDiagnosticos();
             setupUIListeners();
             handleAuth();
         });
 
-        // --- MANEJO DE AUTENTICACIÓN ---
-
+        // --- AUTENTICACIÓN ---
         function handleAuth() {
-            showLoading(true, "Conectando...");
+            showLoading(true, "Conectando al sistema...");
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     userId = user.uid;
-                    console.log("Usuario autenticado:", userId);
                     const userDisplay = document.getElementById('user-id-display');
-                    if(userDisplay) userDisplay.textContent = `ID: ${userId.substring(0,6)}...`;
+                    if(userDisplay) {
+                        userDisplay.textContent = "Conectado";
+                        userDisplay.classList.remove("bg-blue-900");
+                        userDisplay.classList.add("bg-green-600");
+                    }
 
                     const publicDataPath = `artifacts/${appId}/public/data`;
                     pacientesCollectionRef = collection(db, `${publicDataPath}/pacientes`);
                     customDiagnosticosCollectionRef = collection(db, `${publicDataPath}/diagnosticos_custom`);
                     
                     loadCustomDiagnosticos(); 
-                    
-                    // NUEVO: Iniciar escucha de datos principales (con límite seguro para rendimiento)
                     initDataListener();
-
-                    // Inicializar Dashboard con fecha actual
                     initDashboard();
 
                     showLoading(false);
@@ -602,44 +660,35 @@
                             await signInAnonymously(auth);
                         }
                     } catch (error) {
-                        console.warn("Fallo autenticación con token, intentando anónimo...", error);
-                        try {
-                            await signInAnonymously(auth);
-                        } catch (anonError) {
-                            console.error("Error de autenticación final:", anonError);
-                            showLoading(false);
-                            showToast("Error de autenticación.", 'error');
-                        }
+                        console.warn("Fallo autenticación automática...", error);
+                        showLoading(false);
+                        showToast("Error de conexión. Recargue la página.", 'error');
                     }
                 }
             });
         }
 
-        // --- NUEVA LÓGICA DE DATOS: CACHÉ LOCAL ---
-        
+        // --- DATA SYNC ---
         function initDataListener() {
-            // Escuchar los últimos 1000 pacientes para tener una base local rápida
-            // Esto permite búsqueda instantánea, filtrado complejo y mejora UX.
             if (unsubscribePatients) unsubscribePatients();
 
             const q = query(
                 pacientesCollectionRef, 
                 orderBy("fechaInternacion", "desc"),
-                limit(1000) // Límite de seguridad
+                limit(1000)
             );
 
             unsubscribePatients = onSnapshot(q, (snapshot) => {
                 allPatientsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 isPatientsLoaded = true;
-                totalPatientCount = allPatientsList.length; // Aproximado para la vista actual
+                totalPatientCount = allPatientsList.length; 
                 
-                // Actualizar contador global si estamos en vista consulta
                 if (!document.getElementById('consulta-view').classList.contains('hidden')) {
                     processLocalFilters();
                 }
             }, (error) => {
                 console.error("Error cargando pacientes:", error);
-                showToast("Error de conexión a datos", "error");
+                showToast("Error recibiendo datos", "error");
             });
         }
 
@@ -647,45 +696,34 @@
             onSnapshot(query(customDiagnosticosCollectionRef), (snapshot) => {
                 customDiagnosticos = snapshot.docs.map(doc => doc.data().nombre).sort();
                 updateAllDiagnosticosList();
-            }, (error) => {
-                console.error("Error al cargar diagnósticos custom:", error);
-            });
+            }, (error) => console.error(error));
         }
 
-        // --- MANEJO DE UI ---
-
+        // --- UI HANDLERS ---
         function addListenerSafe(id, event, handler) {
             const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener(event, handler);
-            } else {
-                console.warn(`Elemento UI no encontrado: ${id}`);
-            }
+            if (el) el.addEventListener(event, handler);
         }
 
         function setupUIListeners() {
-            // Pestañas
             addListenerSafe('tab-ingreso', 'click', () => showView('ingreso-view'));
             addListenerSafe('tab-consulta', 'click', () => {
                 showView('consulta-view');
-                processLocalFilters(); // Aplicar filtros al entrar
+                processLocalFilters();
             });
             addListenerSafe('tab-dashboard', 'click', () => {
                 showView('dashboard-view');
                 updateDashboardStats(); 
             });
 
-            // Botones
             addListenerSafe('btn-nuevo-paciente', 'click', () => {
                 resetForm();
                 showView('ingreso-view');
             });
 
-            // Dashboard Selectors
             addListenerSafe('dash-month', 'change', updateDashboardStats);
             addListenerSafe('dash-year', 'change', updateDashboardStats);
 
-            // Formularios
             addListenerSafe('patient-form', 'submit', handleFormSubmit);
             addListenerSafe('btn-cancelar-edicion', 'click', (e) => {
                 e.preventDefault();
@@ -693,7 +731,6 @@
                 showView('consulta-view');
             });
 
-            // Modales
             addListenerSafe('btn-open-diag-modal', 'click', () => showDiagnosticoModal(true));
             addListenerSafe('btn-close-diag-modal', 'click', () => showDiagnosticoModal(false));
             addListenerSafe('btn-save-diag-modal', 'click', saveDiagnosticosFromModal);
@@ -703,21 +740,30 @@
             addListenerSafe('btn-cancel-delete', 'click', () => showDeleteModal(false));
             addListenerSafe('btn-confirm-delete', 'click', confirmDeletePatient);
 
-            // Filtros - AHORA USAN processLocalFilters para velocidad
+            // -- LISTENERS DE FILTROS ACTUALIZADOS --
             addListenerSafe('search-general', 'input', processLocalFilters);
-            addListenerSafe('search-date-start', 'change', processLocalFilters);
-            addListenerSafe('search-date-end', 'change', processLocalFilters);
-            addListenerSafe('search-eg-start', 'input', processLocalFilters);
-            addListenerSafe('search-eg-end', 'input', processLocalFilters);
             addListenerSafe('search-patologia', 'change', processLocalFilters);
             addListenerSafe('search-procedencia', 'change', processLocalFilters);
+            // Peso
+            addListenerSafe('search-weight-max', 'input', processLocalFilters);
+            // Nacimiento
+            addListenerSafe('search-date-start', 'change', processLocalFilters);
+            addListenerSafe('search-date-end', 'change', processLocalFilters);
+            // Internacion
+            addListenerSafe('search-date-int-start', 'change', processLocalFilters);
+            addListenerSafe('search-date-int-end', 'change', processLocalFilters);
+            // Alta
+            addListenerSafe('search-date-egr-start', 'change', processLocalFilters);
+            addListenerSafe('search-date-egr-end', 'change', processLocalFilters);
+            // EG
+            addListenerSafe('search-eg-start', 'input', processLocalFilters);
+            addListenerSafe('search-eg-end', 'input', processLocalFilters);
+            // Checkbox
             addListenerSafe('search-only-interned', 'change', processLocalFilters);
 
-            // Exportar
-            addListenerSafe('btn-export-filtered', 'click', () => exportToCsv(filteredPacientes, 'pacientes_neo_vista'));
+            addListenerSafe('btn-export-filtered', 'click', () => exportToCsv(filteredPacientes, 'Neo_SJD_Vista'));
             addListenerSafe('btn-export-all', 'click', handleExportAll); 
             
-            // Acciones tabla
             addListenerSafe('patient-list-container', 'click', handlePatientListClick);
         }
 
@@ -725,21 +771,15 @@
             const views = ['ingreso-view', 'consulta-view', 'dashboard-view'];
             const tabs = ['tab-ingreso', 'tab-consulta', 'tab-dashboard'];
 
-            // Scroll to top when switching views
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             views.forEach((v, idx) => {
                 const el = document.getElementById(v);
                 const tab = document.getElementById(tabs[idx]);
-                
                 if (el) {
-                    if (v === viewId) {
-                        el.classList.remove('hidden');
-                    } else {
-                        el.classList.add('hidden');
-                    }
+                    if (v === viewId) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
                 }
-                
                 if (tab) {
                     if (v === viewId) {
                         tab.classList.add('active');
@@ -768,7 +808,6 @@
             const toastMessage = document.getElementById('toast-message');
             
             toastMessage.textContent = message;
-            
             toast.className = "fixed bottom-5 right-5 max-w-sm w-full bg-white border-l-4 p-4 rounded shadow-lg flex items-center transition-all duration-500 z-50 transform";
             
             if (type === 'success') {
@@ -783,21 +822,18 @@
             }
             
             toast.classList.remove('hidden', 'translate-y-10', 'opacity-0');
-            
             setTimeout(() => {
                 toast.classList.add('translate-y-10', 'opacity-0');
                 setTimeout(() => toast.classList.add('hidden'), 500);
             }, 3000);
         }
 
-        // --- LOGICA DASHBOARD ---
-
+        // --- DASHBOARD ---
         function initDashboard() {
             const now = new Date();
             const currentYear = now.getFullYear();
-            const currentMonth = now.getMonth() + 1; // JS months are 0-indexed
+            const currentMonth = now.getMonth() + 1;
 
-            // Llenar selector de años (Actual - 2 hasta Actual + 2)
             const yearSelect = document.getElementById('dash-year');
             yearSelect.innerHTML = '';
             for (let y = currentYear - 2; y <= currentYear + 2; y++) {
@@ -807,37 +843,26 @@
                 if (y === currentYear) opt.selected = true;
                 yearSelect.appendChild(opt);
             }
-
-            // Setear mes actual
             document.getElementById('dash-month').value = currentMonth;
-
-            // Iniciar listener
             updateDashboardStats();
         }
 
         function updateDashboardStats() {
             const month = parseInt(document.getElementById('dash-month').value);
             const year = parseInt(document.getElementById('dash-year').value);
-
             let startStr, endStr;
 
             if (month === 0) {
-                // Año Completo
                 startStr = `${year}-01-01`;
                 endStr = `${year}-12-31`;
             } else {
-                // Mes Específico
                 startStr = `${year}-${String(month).padStart(2, '0')}-01`;
                 const lastDay = new Date(year, month, 0).getDate();
                 endStr = `${year}-${String(month).padStart(2, '0')}-${lastDay}`;
             }
 
-            // Cancelar suscripción anterior si existe
-            if (unsubscribeDashboard) {
-                unsubscribeDashboard();
-            }
+            if (unsubscribeDashboard) unsubscribeDashboard();
 
-            // Usar 'fechaInternacion' como criterio principal para "Ingresos del periodo"
             const q = query(
                 pacientesCollectionRef, 
                 where("fechaInternacion", ">=", startStr),
@@ -847,13 +872,10 @@
             unsubscribeDashboard = onSnapshot(q, (snapshot) => {
                 const pacientes = snapshot.docs.map(doc => doc.data());
                 calculateAndRenderStats(pacientes);
-            }, (error) => {
-                console.error("Error en Dashboard:", error);
-            });
+            }, (error) => console.error("Error Dashboard:", error));
         }
 
         function calculateAndRenderStats(pacientes) {
-            // 1. Contadores Básicos
             const total = pacientes.length;
             const altas = pacientes.filter(p => p.statusEgreso === 'Alta').length;
             const obitos = pacientes.filter(p => p.statusEgreso === 'Obito').length;
@@ -864,25 +886,14 @@
             document.getElementById('stat-obitos').textContent = obitos;
             document.getElementById('stat-derivaciones').textContent = derivaciones;
 
-            // 2. Promedios (Peso y EG)
-            let sumPeso = 0;
-            let countPeso = 0;
-            let sumEG = 0;
-            let countEG = 0;
+            let sumPeso = 0; let countPeso = 0;
+            let sumEG = 0; let countEG = 0;
             let allDiags = [];
 
             pacientes.forEach(p => {
-                if (p.peso && !isNaN(p.peso)) {
-                    sumPeso += Number(p.peso);
-                    countPeso++;
-                }
-                if (p.edadGestacional && !isNaN(p.edadGestacional)) {
-                    sumEG += Number(p.edadGestacional);
-                    countEG++;
-                }
-                if (Array.isArray(p.diagnosticos)) {
-                    allDiags.push(...p.diagnosticos);
-                }
+                if (p.peso && !isNaN(p.peso)) { sumPeso += Number(p.peso); countPeso++; }
+                if (p.edadGestacional && !isNaN(p.edadGestacional)) { sumEG += Number(p.edadGestacional); countEG++; }
+                if (Array.isArray(p.diagnosticos)) allDiags.push(...p.diagnosticos);
             });
 
             const avgPeso = countPeso > 0 ? Math.round(sumPeso / countPeso) : '-';
@@ -891,17 +902,10 @@
             document.getElementById('stat-avg-peso').textContent = avgPeso;
             document.getElementById('stat-avg-eg').textContent = avgEG;
 
-            // 3. Top 5 Diagnósticos
             const diagCounts = {};
-            allDiags.forEach(d => {
-                diagCounts[d] = (diagCounts[d] || 0) + 1;
-            });
+            allDiags.forEach(d => { diagCounts[d] = (diagCounts[d] || 0) + 1; });
 
-            // Convertir a array, ordenar y tomar top 5
-            const sortedDiags = Object.entries(diagCounts)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 5);
-
+            const sortedDiags = Object.entries(diagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
             const listEl = document.getElementById('stat-top-diag');
             listEl.innerHTML = '';
             
@@ -911,17 +915,13 @@
                 sortedDiags.forEach(([name, count]) => {
                     const li = document.createElement('li');
                     li.className = "flex justify-between items-center border-b border-gray-100 pb-1 last:border-0";
-                    li.innerHTML = `
-                        <span class="truncate pr-2">${name}</span>
-                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">${count}</span>
-                    `;
+                    li.innerHTML = `<span class="truncate pr-2">${name}</span><span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded-full">${count}</span>`;
                     listEl.appendChild(li);
                 });
             }
         }
 
-        // --- LOGICA MODALES Y FORMULARIOS ---
-
+        // --- FORMULARIOS & MODALES ---
         function showDiagnosticoModal(show) {
             const modal = document.getElementById('diagnostico-modal');
             if (show) {
@@ -949,9 +949,7 @@
             showLoading(true, "Guardando...");
 
             const form = e.target;
-            
             const nombreOriginal = form.nombre.value;
-            // Generamos keywords para búsqueda futura si volvemos a búsqueda server-side
             const keywords = nombreOriginal.toLowerCase().split(' ').filter(kw => kw.length > 0);
 
             const patientData = {
@@ -978,14 +976,10 @@
                     patientData.createdAt = new Date().toISOString(); 
                     patientData.createdBy = userId;
                     await addDoc(pacientesCollectionRef, patientData);
-                    // No necesitamos llamar updateTotalPatientCount porque el listener onSnapshot lo hará
                     showToast("Paciente ingresado", "success");
                 }
-                
                 resetForm();
                 showView('consulta-view');
-                // processLocalFilters se ejecutará automáticamente por el listener onSnapshot
-                
             } catch (error) {
                 console.error("Error al guardar:", error);
                 showToast("Error al guardar.", "error");
@@ -1007,8 +1001,6 @@
         function handlePatientListClick(e) {
             const button = e.target.closest('button');
             if (!button) return;
-            
-            // Prevent default button behavior just in case
             e.preventDefault();
 
             const action = button.dataset.action;
@@ -1019,35 +1011,23 @@
                 const patient = filteredPacientes.find(p => p.id === id);
                 if (patient) {
                     const form = document.getElementById('patient-form');
-                    if(form) {
-                        form.nombre.value = patient.nombre || '';
-                        form.fechaNacimiento.value = patient.fechaNacimiento || '';
-                        // Use '' instead of null for safety
-                        form.peso.value = patient.peso || '';
-                        form.edadGestacional.value = patient.edadGestacional || '';
-                        form.procedencia.value = patient.procedencia || '';
-                        form.fechaInternacion.value = patient.fechaInternacion || '';
-                        form.fechaEgreso.value = patient.fechaEgreso || '';
-                        form.statusEgreso.value = patient.statusEgreso || '';
-                        
-                        selectedDiagnosticos = Array.isArray(patient.diagnosticos) ? [...patient.diagnosticos] : [];
-                        updateSelectedDiagnosticosDisplay();
-                        
-                        editingPatientId = patient.id;
-                        const titleEl = document.getElementById('form-title');
-                        if(titleEl) titleEl.textContent = "Editando Paciente";
-                        
-                        const btnSubmit = document.getElementById('btn-submit-form');
-                        if(btnSubmit) btnSubmit.textContent = "Actualizar Datos";
-                        
-                        const btnCancel = document.getElementById('btn-cancelar-edicion');
-                        if(btnCancel) btnCancel.classList.remove('hidden');
-                        
-                        showView('ingreso-view');
-                    }
-                } else {
-                    console.error("Paciente no encontrado en memoria local:", id);
-                    showToast("Error al cargar datos del paciente", "error");
+                    form.nombre.value = patient.nombre || '';
+                    form.fechaNacimiento.value = patient.fechaNacimiento || '';
+                    form.peso.value = patient.peso || '';
+                    form.edadGestacional.value = patient.edadGestacional || '';
+                    form.procedencia.value = patient.procedencia || '';
+                    form.fechaInternacion.value = patient.fechaInternacion || '';
+                    form.fechaEgreso.value = patient.fechaEgreso || '';
+                    form.statusEgreso.value = patient.statusEgreso || '';
+                    
+                    selectedDiagnosticos = Array.isArray(patient.diagnosticos) ? [...patient.diagnosticos] : [];
+                    updateSelectedDiagnosticosDisplay();
+                    
+                    editingPatientId = patient.id;
+                    document.getElementById('form-title').textContent = "Editando Paciente";
+                    document.getElementById('btn-submit-form').textContent = "Actualizar Datos";
+                    document.getElementById('btn-cancelar-edicion').classList.remove('hidden');
+                    showView('ingreso-view');
                 }
             } else if (action === 'delete') {
                 patientToDeleteId = id;
@@ -1059,40 +1039,34 @@
         }
 
         function sharePatientSummary(patient) {
-            const summary = `
-*FICHA NEONATOLOGÍA*
+            const summary = `*FICHA NEONATOLOGÍA - SJD*
 👤 *${patient.nombre || 'N/A'}*
 📅 Nac: ${patient.fechaNacimiento || 'N/A'}
 ⚖️ Peso: ${patient.peso ? `${patient.peso}gr` : 'N/A'} | EG: ${patient.edadGestacional ? `${patient.edadGestacional}sem` : 'N/A'}
 🏥 Procedencia: ${patient.procedencia || 'N/A'}
 🏷️ Status: ${patient.statusEgreso || 'Internado'}
-
 📋 *Diagnósticos:*
-${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patient.diagnosticos.join(', ') : 'S/D'}
-`;
+${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patient.diagnosticos.join(', ') : 'S/D'}`;
             
-            navigator.clipboard.writeText(summary).then(() => {
-                showToast("Ficha copiada al portapapeles", 'success');
-            }).catch(err => {
-                // Fallback
-                const textarea = document.createElement('textarea');
-                textarea.value = summary;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast("Ficha copiada", 'success');
-            });
+            navigator.clipboard.writeText(summary)
+                .then(() => showToast("Ficha copiada al portapapeles", 'success'))
+                .catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = summary;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showToast("Ficha copiada", 'success');
+                });
         }
 
         async function confirmDeletePatient() {
             if (!patientToDeleteId) return;
-            
             showLoading(true, "Borrando...");
             try {
                 const patientRef = doc(db, `artifacts/${appId}/public/data/pacientes`, patientToDeleteId);
                 await deleteDoc(patientRef);
-                // onSnapshot se encarga de actualizar la UI
                 showToast("Paciente eliminado", "success");
             } catch (error) {
                 console.error("Error al borrar:", error);
@@ -1105,26 +1079,21 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
 
         function updateAllDiagnosticosList() {
             allDiagnosticos = [...baseDiagnosticos, ...customDiagnosticos].sort();
-            
             const selectPatologia = document.getElementById('search-patologia');
             const currentValue = selectPatologia.value; 
-            
             selectPatologia.innerHTML = '<option value="">-- Todas las Patologías --</option>';
-            
             allDiagnosticos.forEach(diag => {
                 const option = document.createElement('option');
                 option.value = diag;
                 option.textContent = diag;
                 selectPatologia.appendChild(option);
             });
-            
             selectPatologia.value = currentValue;
         }
 
         function renderDiagnosticoModalList() {
             const listContainer = document.getElementById('diag-modal-list');
             const filter = document.getElementById('diag-modal-search').value.toLowerCase();
-            
             listContainer.innerHTML = '';
             
             const diagnosToShow = allDiagnosticos.filter(d => d.toLowerCase().includes(filter));
@@ -1147,7 +1116,6 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                         <span class="ml-3 text-sm text-gray-700">${diag}</span>
                     </label>
                 `;
-                
                 li.querySelector('input').addEventListener('change', (e) => {
                     const name = e.target.dataset.diagName;
                     if (e.target.checked) {
@@ -1156,7 +1124,6 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                         selectedDiagnosticos = selectedDiagnosticos.filter(d => d !== name);
                     }
                 });
-                
                 listContainer.appendChild(li);
             });
         }
@@ -1180,14 +1147,11 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
         async function addNewDiagnostico() {
             const input = document.getElementById('diag-modal-new-diag');
             const newDiagName = input.value.trim();
-            
             if (!newDiagName) return;
-            
             if (allDiagnosticos.some(d => d.toLowerCase() === newDiagName.toLowerCase())) {
                 showToast("Ya existe ese diagnóstico", "warn");
                 return;
             }
-            
             try {
                 await addDoc(customDiagnosticosCollectionRef, { nombre: newDiagName });
                 input.value = '';
@@ -1198,66 +1162,79 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
             }
         }
 
-        // --- NUEVA LÓGICA DE FILTRADO (CLIENT-SIDE) ---
-
+        // --- FILTROS & RENDERIZADO ---
         function processLocalFilters() {
             if (!isPatientsLoaded) return;
 
             const searchInput = document.getElementById('search-general');
             const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
             
+            // Filtros Fechas Nacimiento
             const dateStart = document.getElementById('search-date-start').value;
             const dateEnd = document.getElementById('search-date-end').value;
+            
+            // Filtros Fechas Internación
+            const dateIntStart = document.getElementById('search-date-int-start').value;
+            const dateIntEnd = document.getElementById('search-date-int-end').value;
+            
+            // Filtros Fechas Alta
+            const dateEgrStart = document.getElementById('search-date-egr-start').value;
+            const dateEgrEnd = document.getElementById('search-date-egr-end').value;
+            
+            // Filtros Numéricos
             const egStart = parseFloat(document.getElementById('search-eg-start').value);
             const egEnd = parseFloat(document.getElementById('search-eg-end').value);
+            const weightMax = parseInt(document.getElementById('search-weight-max').value);
+            
             const patologiaFilter = document.getElementById('search-patologia').value;
             const procedenciaFilter = document.getElementById('search-procedencia').value;
             const onlyInternedEl = document.getElementById('search-only-interned');
             const onlyInterned = onlyInternedEl ? onlyInternedEl.checked : false;
 
-            const hasFilters = (searchTerm && searchTerm.trim() !== '') || dateStart || dateEnd || !isNaN(egStart) || !isNaN(egEnd) || patologiaFilter || procedenciaFilter || onlyInterned;
+            const hasFilters = (searchTerm && searchTerm.trim() !== '') || 
+                             dateStart || dateEnd || 
+                             dateIntStart || dateIntEnd || 
+                             dateEgrStart || dateEgrEnd || 
+                             !isNaN(egStart) || !isNaN(egEnd) || !isNaN(weightMax) ||
+                             patologiaFilter || procedenciaFilter || onlyInterned;
 
-            // Filtrado en memoria: Rápido y Flexible
             filteredPacientes = allPatientsList.filter(p => {
-                // 1. Filtro Internados (Activos)
                 if (onlyInterned && p.statusEgreso !== '') return false;
-                
-                // 2. Filtro Procedencia
                 if (procedenciaFilter && p.procedencia !== procedenciaFilter) return false;
+                if (patologiaFilter && (!p.diagnosticos || !p.diagnosticos.includes(patologiaFilter))) return false;
                 
-                // 3. Filtro Patología (array contains)
-                if (patologiaFilter) {
-                    if (!p.diagnosticos || !p.diagnosticos.includes(patologiaFilter)) return false;
-                }
-                
-                // 4. Fechas
+                // Filtro Peso < X
+                if (!isNaN(weightMax) && (p.peso === undefined || p.peso >= weightMax)) return false;
+
+                // Fechas Nacimiento
                 if (dateStart && (!p.fechaNacimiento || p.fechaNacimiento < dateStart)) return false;
                 if (dateEnd && (!p.fechaNacimiento || p.fechaNacimiento > dateEnd)) return false;
 
-                // 5. Edad Gestacional
+                // Fechas Internación
+                if (dateIntStart && (!p.fechaInternacion || p.fechaInternacion < dateIntStart)) return false;
+                if (dateIntEnd && (!p.fechaInternacion || p.fechaInternacion > dateIntEnd)) return false;
+
+                // Fechas Alta
+                if (dateEgrStart && (!p.fechaEgreso || p.fechaEgreso < dateEgrStart)) return false;
+                if (dateEgrEnd && (!p.fechaEgreso || p.fechaEgreso > dateEgrEnd)) return false;
+                
+                // EG
                 const eg = p.edadGestacional;
                 if (!isNaN(egStart) && (eg === undefined || eg < egStart)) return false;
                 if (!isNaN(egEnd) && (eg === undefined || eg > egEnd)) return false;
-
-                // 6. NOMBRE: Búsqueda parcial y flexible ("juan per" encuentra "Perez Juan")
+                
+                // Nombre
                 if (searchTerm) {
                     const name = (p.nombre || '').toLowerCase();
-                    // Dividimos lo que escribe el usuario por espacios
                     const searchTerms = searchTerm.split(' ').filter(t => t.length > 0);
-                    // Verificamos que TODAS las palabras escritas estén en el nombre
                     const matchesAll = searchTerms.every(term => name.includes(term));
                     if (!matchesAll) return false;
                 }
-
                 return true;
             });
 
-            if (!hasFilters) {
-                // Si no hay filtros, mostramos solo los últimos 3 (asumiendo orden descendente por defecto)
-                renderPatientList(filteredPacientes.slice(0, 3), false);
-            } else {
-                renderPatientList(filteredPacientes, true);
-            }
+            if (!hasFilters) renderPatientList(filteredPacientes.slice(0, 3), false);
+            else renderPatientList(filteredPacientes, true);
         }
 
         function renderPatientList(pacientes, isFiltered) {
@@ -1267,11 +1244,8 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
             if (!listContainer || !counterEl) return;
             const total = totalPatientCount || 0;
 
-            if (isFiltered) {
-                counterEl.innerHTML = `Base de datos: <b>${total}</b> (recientes) | Resultado: <b>${pacientes.length}</b>`;
-            } else {
-                counterEl.innerHTML = `Total Cargados: <b>${total}</b> (Mostrando últimos ${pacientes.length})`;
-            }
+            if (isFiltered) counterEl.innerHTML = `Base de datos: <b>${total}</b> | Resultado: <b>${pacientes.length}</b>`;
+            else counterEl.innerHTML = `Total Cargados: <b>${total}</b> (Mostrando últimos ${pacientes.length})`;
             
             if ((!pacientes || pacientes.length === 0)) {
                 listContainer.innerHTML = '<div class="p-8 text-center text-gray-400 bg-gray-50">No se encontraron pacientes que coincidan con la búsqueda.</div>';
@@ -1311,14 +1285,14 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div class="flex justify-end gap-2">
-                                            <button data-action="share" data-id="${p.id}" data-name="${p.nombre}" class="btn-share shadow-sm">
-                                                Compartir
+                                            <button data-action="share" data-id="${p.id}" data-name="${p.nombre}" class="btn-share shadow-sm" title="Copiar Ficha">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
                                             </button>
-                                            <button data-action="edit" data-id="${p.id}" data-name="${p.nombre}" class="btn-edit shadow-sm">
-                                                Editar
+                                            <button data-action="edit" data-id="${p.id}" data-name="${p.nombre}" class="btn-edit shadow-sm" title="Editar">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </button>
-                                            <button data-action="delete" data-id="${p.id}" data-name="${p.nombre}" class="btn-danger shadow-sm">
-                                                Borrar
+                                            <button data-action="delete" data-id="${p.id}" data-name="${p.nombre}" class="btn-danger shadow-sm" title="Borrar">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </div>
                                     </td>
@@ -1353,19 +1327,16 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
             const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `${filename}.csv`;
+            link.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
             link.click();
         }
 
         async function handleExportAll() {
             showLoading(true, "Exportando Todo...");
             try {
-                // Si tenemos la data en memoria y no supera el límite de 1000, podemos usarla
-                // Pero para "Export Todo" siempre es mejor asegurar un fetch fresco completo si es crítico
-                // Para este caso, usamos getDocs para asegurar TODA la base de datos histórica
                 const snapshot = await getDocs(query(pacientesCollectionRef, orderBy('createdAt', 'desc')));
                 const all = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                exportToCsv(all, 'pacientes_neo_total_db');
+                exportToCsv(all, 'Neo_SJD_Total');
             } catch (error) {
                 console.error(error);
                 showToast("Error al exportar todo", "error");
@@ -1375,6 +1346,7 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
         }
 
         function populateBaseDiagnosticos() {
+            // Lista base de diagnósticos - (Igual a la original)
             baseDiagnosticos = [
                 "Taquipnea Transitoria del Recién Nacido (TTRN)", "Síndrome de Dificultad Respiratoria (SDR)", "Síndrome de Aspiración de Líquido Amniótico Meconial (SALAM)",
                 "Hipertensión Pulmonar Persistente del Recién Nacido (HPPRN)", "Neumonía Neonatal Precoz", "Neumonía Neonatal Tardía", "Displasia Broncopulmonar (DBP)",
@@ -1397,7 +1369,7 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                 "Atresia Esofágica", "Fístula Traqueoesofágica", "Atresia Duodenal", "Estenosis Duodenal", "Atresia Yeyuno-ileal", "Malrotación Intestinal",
                 "Vólvulo Intestinal", "Enfermedad de Hirschsprung", "Íleo Meconial", "Ano Imperforado", "Gastrosquisis", "Onfalocele", "Diarrea Neonatal Infecciosa",
                 "Diarrea Neonatal Metabólica", "Deshidratación Neonatal",
-                "Prematurez", // Diagnóstico consolidado
+                "Prematurez", 
                 "Restricción del Crecimiento Intrauterino (RCIU)", "Pequeño para la Edad Gestacional (PEG)", "Retinopatía del Prematuro (ROP) Estadio 1",
                 "Retinopatía del Prematuro (ROP) Estadio 2", "Retinopatía del Prematuro (ROP) Estadio 3", "Retinopatía del Prematuro (ROP) Estadio 4",
                 "Retinopatía del Prematuro (ROP) Estadio 5", "Osteopenia del Prematuro", "Hipoacusia Neonatal", "Bajo Peso al Nacer (BPN)", "Muy Bajo Peso al Nacer (MBPN)",
