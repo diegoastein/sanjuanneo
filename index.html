@@ -167,7 +167,6 @@
     <header class="bg-blue-800 text-white shadow-lg p-4">
         <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-2 text-center sm:text-left">
-                <!-- Icono de hospital genérico (SVG inline) para decorar -->
                 <svg class="w-8 h-8 text-blue-200 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                 
                 <div>
@@ -227,6 +226,7 @@
                             <option value="Derivado">Derivado</option>
                             <option value="Contrareferencia">Contrareferencia</option>
                             <option value="Guardia">Guardia</option>
+                            <option value="Consultorio">Consultorio</option>
                         </select>
                     </div>
                     
@@ -239,13 +239,39 @@
                         <label for="edadGestacional" class="block text-sm font-medium text-gray-700 mb-1">Edad Gestacional (sem)</label>
                         <input type="number" step="0.1" id="edadGestacional" name="edadGestacional" placeholder="Ej: 38.5" class="form-input">
                     </div>
+
+                    <!-- NUEVOS CAMPOS: APGAR Y TIPO DE PARTO -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="apgar1" class="block text-sm font-medium text-gray-700 mb-1">Apgar 1</label>
+                            <input type="number" id="apgar1" name="apgar1" min="0" max="9" class="form-input" placeholder="0-9">
+                        </div>
+                        <div>
+                            <label for="apgar5" class="block text-sm font-medium text-gray-700 mb-1">Apgar 5</label>
+                            <input type="number" id="apgar5" name="apgar5" min="0" max="10" class="form-input" placeholder="0-10">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="tipoParto" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Parto</label>
+                        <select id="tipoParto" name="tipoParto" class="form-input">
+                            <option value="">Seleccionar...</option>
+                            <option value="Vaginal">Vaginal</option>
+                            <option value="Cesárea">Cesárea</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <h3 class="text-lg font-semibold title-text border-b pb-2 pt-4">Datos de Internación</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div>
                         <label for="fechaInternacion" class="block text-sm font-medium text-gray-700 mb-1">F. Internación</label>
                         <input type="date" id="fechaInternacion" name="fechaInternacion" class="form-input">
+                    </div>
+                    <!-- NUEVO CAMPO: PESO AL INGRESO -->
+                    <div>
+                        <label for="pesoIngreso" class="block text-sm font-medium text-gray-700 mb-1">Peso al ingreso (gr)</label>
+                        <input type="number" id="pesoIngreso" name="pesoIngreso" placeholder="Ej: 2450" class="form-input">
                     </div>
                     <div>
                         <label for="fechaEgreso" class="block text-sm font-medium text-gray-700 mb-1">F. Egreso</label>
@@ -309,9 +335,9 @@
                                 <option value="Derivado">Derivado</option>
                                 <option value="Contrareferencia">Contrareferencia</option>
                                 <option value="Guardia">Guardia</option>
+                                <option value="Consultorio">Consultorio</option>
                             </select>
                         </div>
-                        <!-- NUEVO: PESO MENOR QUE -->
                         <div class="md:col-span-1">
                             <label class="block text-xs font-bold text-red-600 uppercase mb-1">Peso Menor A (g)</label>
                             <input type="number" id="search-weight-max" placeholder="Ej: 1500" class="form-input text-sm border-red-200 focus:border-red-500 focus:ring-red-200">
@@ -320,7 +346,6 @@
 
                     <!-- Fila 2: Rangos de Fechas -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-blue-100/50 p-3 rounded-lg border border-blue-100">
-                        <!-- Fecha Nacimiento -->
                         <div>
                             <span class="block text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">Fecha Nacimiento</span>
                             <div class="grid grid-cols-2 gap-2">
@@ -335,7 +360,6 @@
                             </div>
                         </div>
 
-                        <!-- Fecha Internación -->
                         <div>
                             <span class="block text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">Fecha Internación</span>
                             <div class="grid grid-cols-2 gap-2">
@@ -350,7 +374,6 @@
                             </div>
                         </div>
 
-                        <!-- Fecha Alta -->
                         <div>
                             <span class="block text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">Fecha Alta / Egreso</span>
                             <div class="grid grid-cols-2 gap-2">
@@ -408,10 +431,6 @@
                         Nuevo
                     </button>
                 </div>
-            </div>
-
-            <div class="md:hidden text-right mb-2 text-sm text-blue-600 italic animate-pulse">
-                &larr; Desliza la tabla para ver acciones &rarr;
             </div>
 
             <div id="patient-list-container" class="overflow-hidden rounded-lg border border-gray-200">
@@ -516,7 +535,6 @@
                 
                 <div class="flex-grow overflow-y-auto pr-2">
                     <ul id="diag-modal-list" class="space-y-1">
-                        <!-- Lista JS -->
                     </ul>
                 </div>
             </div>
@@ -529,7 +547,7 @@
 
     <!-- MODAL BORRAR -->
     <div id="delete-modal" class="hidden fixed inset-0 bg-red-900 bg-opacity-20 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 text-center">
+        <div class="bg-white rounded-lg shadow-xl max-sm w-full p-6 text-center">
             <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
                 <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </div>
@@ -601,30 +619,21 @@
         let unsubscribeDashboard = null;
         let unsubscribePatients = null;
 
-        /* ==============================================================
-           CONFIGURACIÓN DE FIREBASE 
-           ============================================================== */
         let firebaseConfig;
         
-        // Cuando cambies el proyecto, actualiza estos valores si no usas 
-        // el entorno de inyección automática.
         if (typeof __firebase_config !== 'undefined') {
             firebaseConfig = JSON.parse(__firebase_config);
         } else {
-            // ---> PEGAR AQUÍ TU NUEVA CONFIGURACIÓN DE FIREBASE <---
             firebaseConfig = {
-  apiKey: "AIzaSyD1tF8-t64vUGpxIIcRzg3dfwGtvNscgTA",
-  authDomain: "neo1-f31ee.firebaseapp.com",
-  projectId: "neo1-f31ee",
-  storageBucket: "neo1-f31ee.firebasestorage.app",
-  messagingSenderId: "660151102744",
-  appId: "1:660151102744:web:a95ec2319539000b5f826d"
-};
-}
-
-
+                apiKey: "AIzaSyD1tF8-t64vUGpxIIcRzg3dfwGtvNscgTA",
+                authDomain: "neo1-f31ee.firebaseapp.com",
+                projectId: "neo1-f31ee",
+                storageBucket: "neo1-f31ee.firebasestorage.app",
+                messagingSenderId: "660151102744",
+                appId: "1:660151102744:web:a95ec2319539000b5f826d"
+            };
+        }
         
-        // Identificador de App (usar nombre único para la nueva institución)
         appId = typeof __app_id !== 'undefined' ? __app_id : 'neo-san-juan-de-dios';
 
         // --- INICIALIZACIÓN ---
@@ -632,7 +641,6 @@
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
-            // setLogLevel('Debug'); // Descomentar para debug
 
             populateBaseDiagnosticos();
             setupUIListeners();
@@ -661,7 +669,6 @@
                     initDashboard();
 
                     showLoading(false);
-                    showView('ingreso-view'); 
                 } else {
                     try {
                         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -750,27 +757,19 @@
             addListenerSafe('btn-cancel-delete', 'click', () => showDeleteModal(false));
             addListenerSafe('btn-confirm-delete', 'click', confirmDeletePatient);
 
-            // -- LISTENERS DE FILTROS ACTUALIZADOS --
             addListenerSafe('search-general', 'input', processLocalFilters);
             addListenerSafe('search-patologia', 'change', processLocalFilters);
             addListenerSafe('search-procedencia', 'change', processLocalFilters);
-            // Peso
             addListenerSafe('search-weight-max', 'input', processLocalFilters);
-            // Nacimiento
             addListenerSafe('search-date-start', 'change', processLocalFilters);
             addListenerSafe('search-date-end', 'change', processLocalFilters);
-            // Internacion
             addListenerSafe('search-date-int-start', 'change', processLocalFilters);
             addListenerSafe('search-date-int-end', 'change', processLocalFilters);
-            // Alta
             addListenerSafe('search-date-egr-start', 'change', processLocalFilters);
             addListenerSafe('search-date-egr-end', 'change', processLocalFilters);
-            // EG
             addListenerSafe('search-eg-start', 'input', processLocalFilters);
             addListenerSafe('search-eg-end', 'input', processLocalFilters);
-            // Checkbox
             addListenerSafe('search-only-interned', 'change', processLocalFilters);
-            // Botón de Búsqueda Manual
             addListenerSafe('btn-search-manual', 'click', processLocalFilters);
 
             addListenerSafe('btn-export-filtered', 'click', () => exportToCsv(filteredPacientes, 'Neo_SJD_Vista'));
@@ -968,9 +967,13 @@
                 nombre: nombreOriginal,
                 nombre_keywords: keywords, 
                 fechaNacimiento: form.fechaNacimiento.value,
-                peso: form.peso.valueAsNumber,
-                edadGestacional: form.edadGestacional.valueAsNumber,
+                peso: form.peso.valueAsNumber || null,
+                edadGestacional: form.edadGestacional.valueAsNumber || null,
                 procedencia: form.procedencia.value,
+                apgar1: form.apgar1.valueAsNumber || null,
+                apgar5: form.apgar5.valueAsNumber || null,
+                tipoParto: form.tipoParto.value,
+                pesoIngreso: form.pesoIngreso.valueAsNumber || null,
                 fechaInternacion: form.fechaInternacion.value,
                 fechaEgreso: form.fechaEgreso.value,
                 statusEgreso: form.statusEgreso.value,
@@ -1028,7 +1031,11 @@
                     form.peso.value = patient.peso || '';
                     form.edadGestacional.value = patient.edadGestacional || '';
                     form.procedencia.value = patient.procedencia || '';
+                    form.apgar1.value = patient.apgar1 !== undefined && patient.apgar1 !== null ? patient.apgar1 : '';
+                    form.apgar5.value = patient.apgar5 !== undefined && patient.apgar5 !== null ? patient.apgar5 : '';
+                    form.tipoParto.value = patient.tipoParto || '';
                     form.fechaInternacion.value = patient.fechaInternacion || '';
+                    form.pesoIngreso.value = patient.pesoIngreso || '';
                     form.fechaEgreso.value = patient.fechaEgreso || '';
                     form.statusEgreso.value = patient.statusEgreso || '';
                     
@@ -1054,8 +1061,10 @@
             const summary = `*FICHA NEONATOLOGÍA - SJD*
 👤 *${patient.nombre || 'N/A'}*
 📅 Nac: ${patient.fechaNacimiento || 'N/A'}
-⚖️ Peso: ${patient.peso ? `${patient.peso}gr` : 'N/A'} | EG: ${patient.edadGestacional ? `${patient.edadGestacional}sem` : 'N/A'}
+⚖️ Peso Nacer: ${patient.peso ? `${patient.peso}gr` : 'N/A'} | EG: ${patient.edadGestacional ? `${patient.edadGestacional}sem` : 'N/A'}
+🔢 Apgar: ${patient.apgar1 || '?'}/${patient.apgar5 || '?'} | Parto: ${patient.tipoParto || 'N/A'}
 🏥 Procedencia: ${patient.procedencia || 'N/A'}
+📥 Peso Ingreso: ${patient.pesoIngreso ? `${patient.pesoIngreso}gr` : 'N/A'}
 🏷️ Status: ${patient.statusEgreso || 'Internado'}
 📋 *Diagnósticos:*
 ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patient.diagnosticos.join(', ') : 'S/D'}`;
@@ -1174,26 +1183,18 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
             }
         }
 
-        // --- FILTROS & RENDERIZADO ---
         function processLocalFilters() {
             if (!isPatientsLoaded) return;
 
             const searchInput = document.getElementById('search-general');
             const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
             
-            // Filtros Fechas Nacimiento
             const dateStart = document.getElementById('search-date-start').value;
             const dateEnd = document.getElementById('search-date-end').value;
-            
-            // Filtros Fechas Internación
             const dateIntStart = document.getElementById('search-date-int-start').value;
             const dateIntEnd = document.getElementById('search-date-int-end').value;
-            
-            // Filtros Fechas Alta
             const dateEgrStart = document.getElementById('search-date-egr-start').value;
             const dateEgrEnd = document.getElementById('search-date-egr-end').value;
-            
-            // Filtros Numéricos
             const egStart = parseFloat(document.getElementById('search-eg-start').value);
             const egEnd = parseFloat(document.getElementById('search-eg-end').value);
             const weightMax = parseInt(document.getElementById('search-weight-max').value);
@@ -1215,27 +1216,18 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                 if (procedenciaFilter && p.procedencia !== procedenciaFilter) return false;
                 if (patologiaFilter && (!p.diagnosticos || !p.diagnosticos.includes(patologiaFilter))) return false;
                 
-                // Filtro Peso < X
                 if (!isNaN(weightMax) && (p.peso === undefined || p.peso >= weightMax)) return false;
-
-                // Fechas Nacimiento
                 if (dateStart && (!p.fechaNacimiento || p.fechaNacimiento < dateStart)) return false;
                 if (dateEnd && (!p.fechaNacimiento || p.fechaNacimiento > dateEnd)) return false;
-
-                // Fechas Internación
                 if (dateIntStart && (!p.fechaInternacion || p.fechaInternacion < dateIntStart)) return false;
                 if (dateIntEnd && (!p.fechaInternacion || p.fechaInternacion > dateIntEnd)) return false;
-
-                // Fechas Alta
                 if (dateEgrStart && (!p.fechaEgreso || p.fechaEgreso < dateEgrStart)) return false;
                 if (dateEgrEnd && (!p.fechaEgreso || p.fechaEgreso > dateEgrEnd)) return false;
                 
-                // EG
                 const eg = p.edadGestacional;
                 if (!isNaN(egStart) && (eg === undefined || eg < egStart)) return false;
                 if (!isNaN(egEnd) && (eg === undefined || eg > egEnd)) return false;
                 
-                // Nombre
                 if (searchTerm) {
                     const name = (p.nombre || '').toLowerCase();
                     const searchTerms = searchTerm.split(' ').filter(t => t.length > 0);
@@ -1245,7 +1237,7 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                 return true;
             });
 
-            if (!hasFilters) renderPatientList(filteredPacientes.slice(0, 3), false);
+            if (!hasFilters) renderPatientList(filteredPacientes.slice(0, 5), false);
             else renderPatientList(filteredPacientes, true);
         }
 
@@ -1280,11 +1272,11 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                                 <tr class="hover:bg-blue-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-bold text-gray-900">${p.nombre}</div>
-                                        <div class="text-xs text-gray-500">${p.fechaNacimiento || '--/--/----'}</div>
+                                        <div class="text-xs text-gray-500">Nac: ${p.fechaNacimiento || '--/--/----'}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-xs text-gray-700"><span class="font-semibold">Peso:</span> ${p.peso ? p.peso + 'g' : '-'}</div>
-                                        <div class="text-xs text-gray-700"><span class="font-semibold">EG:</span> ${p.edadGestacional ? p.edadGestacional + 's' : '-'}</div>
+                                        <div class="text-xs text-gray-700"><span class="font-semibold">Peso N:</span> ${p.peso ? p.peso + 'g' : '-'} | <span class="font-semibold">EG:</span> ${p.edadGestacional ? p.edadGestacional + 's' : '-'}</div>
+                                        <div class="text-xs text-gray-700"><span class="font-semibold">Apgar:</span> ${p.apgar1 || '?'}/${p.apgar5 || '?'} | <span class="font-semibold">Parto:</span> ${p.tipoParto || '-'}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -1321,7 +1313,7 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                 showToast("No hay datos para exportar", "warn");
                 return;
             }
-            const headers = ["ID", "Nombre", "F.Nac", "Peso", "EG", "Procedencia", "F.Int", "F.Egr", "Status", "Diagnosticos"];
+            const headers = ["ID", "Nombre", "F.Nac", "Peso Nacer", "EG", "Apgar 1", "Apgar 5", "Tipo Parto", "Procedencia", "Peso Ingreso", "F.Int", "F.Egr", "Status", "Diagnosticos"];
             const csvRows = [headers.join(',')];
 
             dataToExport.forEach(p => {
@@ -1332,7 +1324,22 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                     return str;
                 };
                 const diagStr = Array.isArray(p.diagnosticos) ? p.diagnosticos.join('; ') : '';
-                const values = [p.id, p.nombre, p.fechaNacimiento, p.peso, p.edadGestacional, p.procedencia, p.fechaInternacion, p.fechaEgreso, p.statusEgreso, diagStr].map(escape);
+                const values = [
+                    p.id, 
+                    p.nombre, 
+                    p.fechaNacimiento, 
+                    p.peso, 
+                    p.edadGestacional, 
+                    p.apgar1, 
+                    p.apgar5, 
+                    p.tipoParto, 
+                    p.procedencia, 
+                    p.pesoIngreso,
+                    p.fechaInternacion, 
+                    p.fechaEgreso, 
+                    p.statusEgreso, 
+                    diagStr
+                ].map(escape);
                 csvRows.push(values.join(','));
             });
 
@@ -1358,7 +1365,6 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
         }
 
         function populateBaseDiagnosticos() {
-            // Lista base de diagnósticos - (Igual a la original)
             baseDiagnosticos = [
                 "Taquipnea Transitoria del Recién Nacido (TTRN)", "Síndrome de Dificultad Respiratoria (SDR)", "Síndrome de Aspiración de Líquido Amniótico Meconial (SALAM)",
                 "Hipertensión Pulmonar Persistente del Recién Nacido (HPPRN)", "Neumonía Neonatal Precoz", "Neumonía Neonatal Tardía", "Displasia Broncopulmonar (DBP)",
