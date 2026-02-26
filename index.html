@@ -1083,7 +1083,7 @@
                 fechaInternacion: form.fechaInternacion.value,
                 fechaEgreso: form.fechaEgreso.value,
                 statusEgreso: form.statusEgreso.value,
-                diagnosticos: selectedDiagnosticos,
+                diagnosticos: [...selectedDiagnosticos], // Clonamos el array para asegurar integridad
                 lastUpdatedBy: userId,
                 lastUpdatedAt: new Date().toISOString()
             };
@@ -1222,19 +1222,55 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
             selectPatologia.value = currentValue;
         }
 
+        // Obtiene los 5 diagnósticos más frecuentes basados en la DB cargada
+        function getTopDiagnosticos() {
+            const diagCounts = {};
+            allPatientsList.forEach(p => {
+                if (Array.isArray(p.diagnosticos)) {
+                    p.diagnosticos.forEach(d => {
+                        diagCounts[d] = (diagCounts[d] || 0) + 1;
+                    });
+                }
+            });
+            
+            let top = Object.entries(diagCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(entry => entry[0]);
+                
+            // Relleno por defecto si hay menos de 5 cargados en la base de datos
+            const defaultTop = [
+                "Prematurez", 
+                "Síndrome de Dificultad Respiratoria (SDR)", 
+                "Taquipnea Transitoria del Recién Nacido (TTRN)",
+                "Hiperbilirrubinemia Neonatal", 
+                "Sospecha de Sepsis Neonatal Precoz"
+            ];
+            
+            if (top.length < 5) {
+                defaultTop.forEach(d => {
+                    if (top.length < 5 && !top.includes(d) && allDiagnosticos.includes(d)) {
+                        top.push(d);
+                    }
+                });
+            }
+            
+            return top;
+        }
+
         function renderDiagnosticoModalList() {
             const listContainer = document.getElementById('diag-modal-list');
             const filter = document.getElementById('diag-modal-search').value.toLowerCase();
             listContainer.innerHTML = '';
             
-            const diagnosToShow = allDiagnosticos.filter(d => d.toLowerCase().includes(filter));
+            let diagnosToShow = allDiagnosticos.filter(d => d.toLowerCase().includes(filter));
             
             if (diagnosToShow.length === 0) {
                 listContainer.innerHTML = '<p class="text-sm text-gray-400 italic p-2">No se encontraron resultados.</p>';
                 return;
             }
 
-            diagnosToShow.forEach(diag => {
+            const createLi = (diag) => {
                 const isChecked = selectedDiagnosticos.includes(diag);
                 const li = document.createElement('li');
                 li.classList.add('flex', 'items-center', 'p-2', 'hover:bg-gray-50', 'rounded', 'cursor-pointer');
@@ -1255,8 +1291,39 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                         selectedDiagnosticos = selectedDiagnosticos.filter(d => d !== name);
                     }
                 });
-                listContainer.appendChild(li);
-            });
+                return li;
+            };
+
+            const isSearching = filter.trim().length > 0;
+            const topDiags = getTopDiagnosticos();
+
+            if (!isSearching && topDiags.length > 0) {
+                // Sección: Frecuentes
+                const freqHeader = document.createElement('div');
+                freqHeader.className = 'text-xs font-bold text-gray-500 uppercase bg-gray-100 p-2 mt-2 mb-1 rounded';
+                freqHeader.textContent = 'Frecuentes (Top 5)';
+                listContainer.appendChild(freqHeader);
+
+                topDiags.forEach(diag => {
+                    if (allDiagnosticos.includes(diag)) {
+                        listContainer.appendChild(createLi(diag));
+                    }
+                });
+
+                // Sección: Todos
+                const allHeader = document.createElement('div');
+                allHeader.className = 'text-xs font-bold text-gray-500 uppercase bg-gray-100 p-2 mt-4 mb-1 rounded';
+                allHeader.textContent = 'Todos los diagnósticos';
+                listContainer.appendChild(allHeader);
+
+                diagnosToShow.forEach(diag => {
+                    if (!topDiags.includes(diag)) {
+                        listContainer.appendChild(createLi(diag));
+                    }
+                });
+            } else {
+                diagnosToShow.forEach(diag => listContainer.appendChild(createLi(diag)));
+            }
         }
 
         function saveDiagnosticosFromModal() {
@@ -1390,6 +1457,9 @@ ${Array.isArray(patient.diagnosticos) && patient.diagnosticos.length > 0 ? patie
                                         <div class="text-xs text-gray-700"><span class="font-semibold">Peso N:</span> ${p.peso ? p.peso + 'g' : '-'} | <span class="font-semibold">EG:</span> ${p.edadGestacional ? p.edadGestacional + 's' : '-'}</div>
                                         <div class="text-xs text-gray-700"><span class="font-semibold">Apgar:</span> ${p.apgar1 || '?'}/${p.apgar5 || '?'} | <span class="font-semibold">Parto:</span> ${p.tipoParto || '-'}</div>
                                         <div class="text-xs text-blue-700 mt-1"><span class="font-semibold">Días Int:</span> ${diasInt !== null ? diasInt : '-'}</div>
+                                        <div class="text-xs text-gray-500 mt-1 max-w-[200px] sm:max-w-xs truncate" title="${Array.isArray(p.diagnosticos) && p.diagnosticos.length > 0 ? p.diagnosticos.join(', ') : 'Ninguno'}">
+                                            <span class="font-semibold text-gray-600">Diag:</span> ${Array.isArray(p.diagnosticos) && p.diagnosticos.length > 0 ? p.diagnosticos.join(', ') : '-'}
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
